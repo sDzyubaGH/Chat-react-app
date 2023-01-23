@@ -1,7 +1,26 @@
+@mixin mobile {
+  @media screen and (max-width: 480px) {
+    @content
+  }
+}
+
+@mixin tablet {
+  @media screen and (max-width: 768px) {
+    @content
+  }
+}
+
+@mixin laptop {
+  @media screen and (max-width: 1200px) {
+    @content
+  }
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .formContainer {
@@ -99,6 +118,10 @@
 
         .logo {
           font-weight: bold;
+
+          @include tablet {
+            display: none;
+          }
         }
 
         .user {
@@ -138,24 +161,37 @@
             outline: none;
           }
         }
+      }
 
-        .userChat {
-          padding: 10px;
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          color: white;
-          cursor: pointer;
+      .userChat {
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: white;
+        cursor: pointer;
 
-          &:hover {
-            background-color: #2f2d52;
+        &:hover {
+          background-color: #2f2d52;
+        }
+
+        img {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+
+        .userChatInfo {
+          span {
+            font-size: 18px;
+            font-weight: 500;
+            color: #a7bcff;
           }
 
-          img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
+          p {
+            font-size: 13px;
+            color: #d3d3d3;
           }
         }
       }
@@ -163,6 +199,123 @@
 
     .chat {
       flex: 2;
+
+      .chatInfo {
+        display: flex;
+        height: 50px;
+        background-color: #5d5b8d;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+
+      }
+
+      .chatIcons {
+        display: flex;
+        gap: 10px;
+
+        img {
+          cursor: pointer;
+          height: 30px;
+        }
+      }
+
+      .messages {
+        background-color: #ddddf7;
+        padding: 10px;
+        height: calc(100% - 100px);
+        overflow: scroll;
+
+        .message {
+          gap: 10px;
+          display: flex;
+          margin-bottom: 20px;
+
+          .messageInfo {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            color: gray;
+            font-weight: 300;
+
+            img {
+              object-fit: cover;
+              height: 40px;
+              width: 40px;
+              border-radius: 50%;
+            }
+
+            span {
+              text-align: center
+            }
+          }
+
+          .messageContent {
+            max-width: 80%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            p {
+              background-color: #fff;
+              padding: 10px 20px;
+              border-radius: 0px 10px 10px 10px;
+              max-width: max-content;
+            }
+
+            img {
+              width: 40%;
+            }
+          }
+
+          &.owner {
+            flex-direction: row-reverse;
+
+            .messageContent {
+              align-items: flex-end;
+
+              p {
+                background-color: #8da4f1;
+                color: #fff;
+                border-radius: 10px 0 10px 10px;
+              }
+            }
+          }
+        }
+      }
+
+      .input {
+        height: 50px;
+        background-color: #fff;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        input {
+          padding: 10px;
+          outline: none;
+          border: none;
+          width: 100%;
+          margin: 10px;
+        }
+
+        .send {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+
+          input {
+            display: none;
+          }
+
+          button {
+            padding: 5px 10px;
+            cursor: pointer;
+          }
+        }
+      }
     }
   }
 }

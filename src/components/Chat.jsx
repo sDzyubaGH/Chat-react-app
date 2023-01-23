@@ -1,7 +1,23 @@
 import React from 'react'
+import add from "../img/add.png"
+import cam from "../img/cam.png"
+import more from "../img/more.png"
+import { Input } from './Input'
+import { Messages } from './Messages'
 
 export const Chat = () => {
   return (
-    <div className='chat'>Chat</div>
+    <div className='chat'>
+      <div className="chatInfo">
+        <span>Jane</span>
+        <div className="chatIcons">
+          <img src={cam} alt="" />
+          <img src={add} alt="" />
+          <img src={more} alt="" />
+        </div>
+      </div>
+      <Messages />
+      <Input />
+    </div>
   )
 }
