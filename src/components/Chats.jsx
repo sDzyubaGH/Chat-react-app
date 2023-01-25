@@ -1,15 +1,33 @@
-import React from 'react'
+import { doc, collection, getDoc, query } from 'firebase/firestore'
+import React, { useContext, useEffect } from 'react'
+import { Context } from '../context/Context'
+import { Loading } from './Loading'
+import { UserChat } from './UserChat'
 
-export const Chats = () => {
+export const Chats = ({ chats, setChats, setSelectedChat }) => {
+  const { db, auth } = useContext(Context)
+  const currentUser = auth.currentUser
+
+  const getChats = async () => {
+    const chats = []
+    try {
+      const res = await getDoc(doc(db, 'userChats', currentUser.uid))
+      Object.keys(res.data()).map(chat => chats.push(res.data()[chat].userInfo))
+    } catch (e) {
+      console.log(e.message)
+    }
+    setChats(chats)
+  }
+
+  useEffect(() => {
+    getChats()
+  }, [])
+
   return (
     <div className='user'>
-      <div className="userChat">
-        <img src="https://images.unsplash.com/photo-1632700454633-28ad72be520b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1964&q=80" alt="" />
-        <div className="userChatInfo">
-          <span>Jane</span>
-          <p>Hello</p>
-        </div>
-      </div>
+      {chats?.length !== 0
+        ? chats.map(chat => <UserChat key={chat.uid} user={chat} onClick={() => setSelectedChat(chat)} />)
+        : <Loading />}
     </div>
   )
 }

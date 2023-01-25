@@ -2,24 +2,32 @@ import React, { useContext, useState } from 'react'
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { Context } from '../context/Context'
 import { UserChat } from './UserChat';
+import { handleFoundUserSelect } from '../utils/functions';
 
-export const SearchBar = () => {
+export const SearchBar = ({ addNewChat, setSelectedChat }) => {
   const [username, setUsername] = useState('')
   const [err, setErr] = useState(false)
-  const [user, setUser] = useState(null)
-  const { db } = useContext(Context)
+  const { db, auth } = useContext(Context)
+  const currentUser = auth.currentUser
   const [foundUsers, setFoundUsers] = useState([])
+
+  const resetFoundUsers = () => {
+    setFoundUsers([])
+  }
+
+  const resetUserName = () => {
+    setUsername('')
+  }
 
   const handleSearch = async () => {
     try {
       const usersRef = collection(db, "users");
-      const q = query(usersRef, where("username", "==", username.toLowerCase()));
+      const q = query(usersRef, where("displayName", "==", username.toLowerCase()));
       const querySnapshot = await getDocs(q)
       const users = []
       querySnapshot.forEach(doc => {
         users.push(doc.data())
       })
-      console.log(users)
       setFoundUsers(users)
     } catch (e) {
       console.log(e.message)
@@ -28,16 +36,24 @@ export const SearchBar = () => {
   }
 
   const handleKey = (e) => {
-    // setFoundUsers(foundUsers => [])
     if (e.code === 'Enter' || e.code === 'NumpadEnter') {
       handleSearch()
     }
+  }
+
+  const handleSelect = (foundUser) => {
+    handleFoundUserSelect(currentUser, foundUser, db)
+    addNewChat(foundUser)
+    setSelectedChat(foundUser)
+    setFoundUsers([])
+    setUsername('')
   }
 
   return (
     <div className='searchbar'>
       <div className="searchForm">
         <input type="text" placeholder='Find a user'
+          value={username}
           onChange={e => setUsername(e.target.value)}
           onKeyDown={handleKey} />
       </div>
@@ -45,7 +61,19 @@ export const SearchBar = () => {
       {foundUsers
         ? (
           <div className='foundUsers'>
-            {foundUsers.map(user => <UserChat key={user.uid} user={user} />)}
+            {foundUsers.map(foundUser => {
+              if (foundUser.uid === currentUser.uid) {
+                return
+              }
+
+              return <UserChat key={foundUser.uid}
+                user={foundUser}
+                resetFoundUsers={resetFoundUsers}
+                resetUserName={resetUserName}
+                addNewChat={addNewChat}
+                onClick={() => handleSelect(foundUser)}
+              />
+            })}
           </div>
         )
         : <></>}

@@ -16,7 +16,7 @@ export const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    const username = e.target[0].value
+    const displayName = e.target[0].value
     const email = e.target[1].value
     const password = e.target[2].value
     const file = e.target[3].files[0]
@@ -24,7 +24,7 @@ export const Register = () => {
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password)
 
-      const storageRef = ref(storage, 'images/' + username)
+      const storageRef = ref(storage, 'images/' + displayName)
 
       await uploadBytesResumable(storageRef, file)
         .then(() => {
@@ -33,13 +33,14 @@ export const Register = () => {
               try {
                 //Update profile
                 await updateProfile(res.user, {
-                  displayName: username,
+                  displayName,
                   photoURL: downloadURL,
                 });
+
                 //create user on firestore
                 await setDoc(doc(db, "users", res.user.uid), {
                   uid: res.user.uid,
-                  username,
+                  displayName,
                   email,
                   photoURL: downloadURL,
                 });
@@ -50,7 +51,6 @@ export const Register = () => {
               } catch (err) {
                 console.log(err);
                 setError(true);
-                // setLoading(false);
               }
             })
         })

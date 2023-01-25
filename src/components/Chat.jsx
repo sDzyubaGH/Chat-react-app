@@ -5,11 +5,11 @@ import more from "../img/more.png"
 import { Input } from './Input'
 import { Messages } from './Messages'
 
-export const Chat = () => {
+export const Chat = ({ user }) => {
   return (
     <div className='chat'>
       <div className="chatInfo">
-        <span>Jane</span>
+        <span>{user.displayName}</span>
         <div className="chatIcons">
           <img src={cam} alt="" />
           <img src={add} alt="" />

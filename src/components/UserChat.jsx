@@ -1,21 +1,12 @@
-import { getDocs } from 'firebase/firestore'
-import React, { useContext } from 'react'
-import { Context } from '../context/Context'
+import React from 'react'
 
-export const UserChat = ({ user }) => {
-  const { auth } = useContext(Context)
-  const currentUser = auth.currentUser
-
-  const handleSelect = async () => {
-    // const combinedId = currentUser.uid > 
-    // const res = await getDocs()
-  }
-
+export const UserChat = ({ user, onClick }) => {
   return (
-    <div className="userChat" onClick={handleSelect}>
+    <div className="userChat" onClick={onClick}>
       <img src={user.photoURL} alt="" />
       <div className="userChatInfo">
-        <span>{user.username}</span>
+        <span className='username'>{user.displayName}</span>
+        {user.lastMessage && <span className='lastMessage'>{user.lastMessage}</span>}
       </div>
     </div>
   )
