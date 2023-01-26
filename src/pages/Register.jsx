@@ -6,15 +6,17 @@ import { doc, setDoc } from "firebase/firestore";
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import { Context } from '../context/Context';
+import { Loading } from '../components/Loading';
 
 export const Register = () => {
   const { storage, auth, db } = useContext(Context)
   const [error, setError] = useState(false)
-  const [fileUploadProgress, setFileUploadProgress] = useState(0)
   const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setLoading(true)
 
     const displayName = e.target[0].value
     const email = e.target[1].value
@@ -52,12 +54,18 @@ export const Register = () => {
                 console.log(err);
                 setError(true);
               }
+              setLoading(false)
             })
         })
     } catch (err) {
       console.log(err)
       setError(true)
+      setLoading(false)
     }
+  }
+
+  if (loading) {
+    return <Loading />
   }
 
   return (

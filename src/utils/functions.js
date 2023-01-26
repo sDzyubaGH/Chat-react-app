@@ -1,10 +1,16 @@
 import { doc, getDoc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore"
 
+export function getCombinedId(currentUserId, userId) {
+  const combinedId = currentUserId > userId
+    ? currentUserId + userId
+    : userId + currentUserId
+
+  return combinedId
+}
+
 export async function handleFoundUserSelect(currentUser, user, db) {
   try {
-    const combinedId = currentUser.uid > user.uid
-      ? currentUser.uid + user.uid
-      : user.uid + currentUser.uid
+    const combinedId = getCombinedId(currentUser.uid, user.uid)
 
     const res = await getDoc(doc(db, 'chats', combinedId))
     if (!res.exists()) {

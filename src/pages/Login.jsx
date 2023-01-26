@@ -37,8 +37,8 @@ export const Login = () => {
           <input type="email" placeholder='email' />
           <input type="password" placeholder='Password' />
           <button>Log in</button>
-          {err && <p>Wrong password or email</p>}
-          {userNotFound && <p>User not found</p>}
+          {err && <p className='loginError'>Wrong password or email</p>}
+          {userNotFound && <p className='loginError'>User not found</p>}
           <p>Don't you have an account?  <Link to={`/register`}>Register</Link></p>
         </form>
       </div>

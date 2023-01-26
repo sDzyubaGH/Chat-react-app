@@ -1,11 +1,12 @@
 import { doc, collection, getDoc, query } from 'firebase/firestore'
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Context } from '../context/Context'
 import { Loading } from './Loading'
 import { UserChat } from './UserChat'
 
 export const Chats = ({ chats, setChats, setSelectedChat }) => {
   const { db, auth } = useContext(Context)
+  const [chatsLoaded, setChatsLoaded] = useState(false)
   const currentUser = auth.currentUser
 
   const getChats = async () => {
@@ -20,13 +21,21 @@ export const Chats = ({ chats, setChats, setSelectedChat }) => {
   }
 
   useEffect(() => {
+    setChatsLoaded(false)
     getChats()
+    setChatsLoaded(true)
   }, [])
+
+  if (chatsLoaded && chats.length === 0) {
+    return (
+      <p>Chats not found</p>
+    )
+  }
 
   return (
     <div className='user'>
-      {chats?.length !== 0
-        ? chats.map(chat => <UserChat key={chat.uid} user={chat} onClick={() => setSelectedChat(chat)} />)
+      {chats?.length
+        ? chats.map(chat => <UserChat key={chat.uid} user={chat} setSelectedChat={setSelectedChat} onClick={() => {setSelectedChat(chat)}} />)
         : <Loading />}
     </div>
   )

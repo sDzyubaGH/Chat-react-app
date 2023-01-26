@@ -29,7 +29,8 @@ export const Sidebar = ({ setSelectedChat }) => {
       <Chats
         chats={chats}
         setSelectedChat={setSelectedChat}
-        setChats={setChatsList} />
+        setChats={setChatsList}
+      />
     </div>
   )
 }

@@ -1,16 +1,38 @@
-import React from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
+import { Context } from '../context/Context'
 
-export const Message = () => {
-  return (
-    <div className='message owner'>
+export const Message = ({ message, selectedChat }) => {
+  const { auth } = useContext(Context)
+  const currentUser = auth.currentUser
+
+  if (message) {
+    let className = ''
+    let ownerPhotoURL = ''
+    if (message.senderId === currentUser.uid) {
+      className = 'message owner'
+      ownerPhotoURL = currentUser?.photoURL
+    } else {
+      className = 'message'
+      ownerPhotoURL = selectedChat?.photoURL
+    }
+
+    const date = message.date.toDate().toISOString().split('T')[0]
+    const time = `${message.date.toDate().getHours()}:${message.date.toDate().getMinutes()}`
+
+    return <div className={className}>
       <div className="messageInfo">
-        <img src="https://images.unsplash.com/photo-1673120768399-edb51f6d9cd2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80" alt="" /> 
-        <span>just now</span>
+        <img src={ownerPhotoURL} alt="" />
+        <span>{date}</span>
+        <span>{time}</span>
       </div>
       <div className="messageContent">
-        <p>hello</p>
-        <img src="https://images.unsplash.com/photo-1673120768399-edb51f6d9cd2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80" alt="" />
+        {message.text && <p>{message.text}</p>}
+        {message.img && <img src={message.img} alt="" />}
       </div>
     </div>
+  }
+
+  return (
+    <></>
   )
 }

@@ -22,13 +22,15 @@ export const SearchBar = ({ addNewChat, setSelectedChat }) => {
   const handleSearch = async () => {
     try {
       const usersRef = collection(db, "users");
-      const q = query(usersRef, where("displayName", "==", username.toLowerCase()));
+      const q = query(usersRef, where("displayName", "==", username));
       const querySnapshot = await getDocs(q)
+      console.log(querySnapshot)
       const users = []
       querySnapshot.forEach(doc => {
         users.push(doc.data())
       })
       setFoundUsers(users)
+      console.log()
     } catch (e) {
       console.log(e.message)
       setErr(e)
