@@ -54,9 +54,9 @@ export const Chat = ({ selectedChat }) => {
   })
 
   useEffect(() => {
-    const messages = document.querySelectorAll('.message')
-    messages[messages.length - 1]?.scrollIntoView({ behavior: "smooth" })
-    console.log('rerender')
+    const messages = document.querySelector('.messages')
+    // messages[messages.length - 1]?.scrollTo()
+    console.log(messages.scrollHeight)
   }, [messages])
 
   const mobileMenuClickHandle = () => {

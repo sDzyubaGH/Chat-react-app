@@ -33,7 +33,7 @@ export const Chats = ({ chats, setChats, setSelectedChat }) => {
   }
 
   return (
-    <div className='user'>
+    <div className='chats'>
       {chats?.length
         ? chats.map(chat => <UserChat key={chat.uid} user={chat} setSelectedChat={setSelectedChat} onClick={() => {setSelectedChat(chat)}} />)
         : <Loading />}

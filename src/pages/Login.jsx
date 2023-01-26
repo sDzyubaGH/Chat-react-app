@@ -31,7 +31,7 @@ export const Login = () => {
   return (
     <div className='formContainer'>
       <div className="formWrapper">
-        <span className='logo'>Lama chat</span>
+        <span className='logo'>Panda chat</span>
         <span className='title'>Log in</span>
         <form onSubmit={handleSubmit}>
           <input type="email" placeholder='email' />

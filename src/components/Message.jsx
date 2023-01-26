@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef } from 'react'
 import { Context } from '../context/Context'
+import unknownImg from '../img/unknown.jpeg'
 
 export const Message = ({ message, selectedChat }) => {
   const { auth } = useContext(Context)
@@ -14,6 +15,10 @@ export const Message = ({ message, selectedChat }) => {
     } else {
       className = 'message'
       ownerPhotoURL = selectedChat?.photoURL
+    }
+
+    if (!ownerPhotoURL) {
+      ownerPhotoURL = unknownImg
     }
 
     const date = message.date.toDate().toISOString().split('T')[0]

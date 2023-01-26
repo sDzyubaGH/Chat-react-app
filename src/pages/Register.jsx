@@ -27,7 +27,6 @@ export const Register = () => {
       const res = await createUserWithEmailAndPassword(auth, email, password)
 
       const storageRef = ref(storage, 'images/' + displayName)
-
       await uploadBytesResumable(storageRef, file)
         .then(() => {
           getDownloadURL(storageRef)
@@ -36,7 +35,7 @@ export const Register = () => {
                 //Update profile
                 await updateProfile(res.user, {
                   displayName,
-                  photoURL: downloadURL,
+                  photoURL: file ? downloadURL : '',
                 });
 
                 //create user on firestore
@@ -44,7 +43,7 @@ export const Register = () => {
                   uid: res.user.uid,
                   displayName,
                   email,
-                  photoURL: downloadURL,
+                  photoURL: file ? downloadURL : '',
                 });
 
                 //create empty user chats on firestore
@@ -71,7 +70,7 @@ export const Register = () => {
   return (
     <div className='formContainer'>
       <div className="formWrapper">
-        <span className='logo'>Lama chat</span>
+        <span className='logo'>Panda chat</span>
         <span className='title'>Register</span>
         <form onSubmit={handleSubmit}>
           <input type="text" placeholder='Name' />
